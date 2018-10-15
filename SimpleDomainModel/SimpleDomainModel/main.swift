@@ -28,9 +28,9 @@ public struct Money {
   public var currency : String
     
   public func convert(_ to: String) -> Money {
-    let namesOfIntegers : [String: Double] = ["USD": 1.0, "EUR":2.0, "GBP": 1.50, "CAN": 0.50]
+    let namesOfIntegers : [String: Double] = ["USD": 1.0, "EUR": 1.50, "GBP": 0.50, "CAN": 1.25]
     var newAmount = Double(self.amount) * 1.0
-    newAmount = newAmount / namesOfIntegers[self.currency]! / namesOfIntegers[to]!
+    newAmount = newAmount / namesOfIntegers[self.currency]! * namesOfIntegers[to]!
     let finAmount : Int = Int(newAmount)
     let newMoney = Money(amount: finAmount, currency: to)
     return newMoney
@@ -70,7 +70,7 @@ open class Job {
   open func calculateIncome(_ hours: Int) -> Int {
     switch self.type {
     case .Salary(let i):
-        return Int(i / 2000) * hours
+        return i
     case .Hourly(let d):
         return Int(d) * hours
     }
@@ -79,9 +79,9 @@ open class Job {
   open func raise(_ amt : Double) {
     switch self.type {
     case .Salary(let i):
-        self.type = JobType.Hourly(Double(i) * amt)
+        self.type = JobType.Salary(i + Int(amt))
     case .Hourly(let d):
-        self.type = JobType.Hourly(d * amt)
+        self.type = JobType.Hourly(d + amt)
     }
     }
 }
