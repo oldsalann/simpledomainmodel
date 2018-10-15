@@ -165,10 +165,7 @@ open class Family {
   open func householdIncome() -> Int {
     var total = 0
     for i in members {
-        print(i.toString())
         total = total + Int(i.job?.calculateIncome(2000) ?? 0)
-        print(Int(i.job?.calculateIncome(2000) ?? 0))
-        print(total)
     }
     return total
   }
