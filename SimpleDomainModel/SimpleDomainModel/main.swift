@@ -82,7 +82,8 @@ open class Job {
         self.type = JobType.Hourly(Double(i) * amt)
     case .Hourly(let d):
         self.type = JobType.Hourly(d * amt)
-  }
+    }
+    }
 }
 
 
@@ -143,37 +144,25 @@ open class Family {
     spouse2.spouse = spouse1
     members.append(spouse1)
     members.append(spouse2)
-    
   }
   
   open func haveChild(_ child: Person) -> Bool {
+    for i in members {
+        if (i._spouse != nil) {
+            if (i.age < 21 && Int(i._spouse?.age ?? 0) < 21) {
+                return false
+            }
+        }
+    }
+    members.append(child)
+    return true
   }
   
   open func householdIncome() -> Int {
+    var total = 0
+    for i in members {
+        total = total + Int(i.job?.calculateIncome(2000) ?? 0)
+    }
+    return total
   }
 }
-
-
-
-
-
-/*
- switch to {
- case "EUR":
- newCur = "EUR"
- newAmount = newAmount / namesOfIntegers[self.currency]! / namesOfIntegers[to]!
- case "USD":
- newCur = "USD"
- 
- case "CAN":
- newCur = "CAN"
- 
- case "GBP":
- newCur = "GBP"
- 
- default:
- break
- }
- let finAmount : Int = Int(newAmount)
- return Money(amount: finAmount
-*/
