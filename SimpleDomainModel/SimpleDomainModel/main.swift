@@ -72,7 +72,7 @@ open class Job {
     case .Salary(let i):
         return i
     case .Hourly(let d):
-        return Int(d) * hours
+        return Int(Double(d) * Double(hours))
     }
   }
   
@@ -101,18 +101,25 @@ open class Person {
         return _job
     }
     set(value) {
-        _job = value
+        if (age < 16) {
+            _job = nil
+        } else {
+            _job = value
+        }
     }
   }
   
   fileprivate var _spouse : Person? = nil
   open var spouse : Person? {
     get {
-        //return Person(firstName: String(self.spouse?.firstName ?? ""), lastName: String(self.spouse?.lastName ?? ""), age: Int(self.spouse?.age ?? 0))
         return _spouse
     }
     set(value) {
-        _spouse = value
+        if (age < 18) {
+            _job = nil
+        } else {
+            _spouse = value
+        }
     }
   }
   
@@ -123,12 +130,9 @@ open class Person {
   }
   
   open func toString() -> String {
-    var retStr = "[Person: firstName: " + firstName + " lastName: "
-    retStr = retStr + lastName
-    retStr = retStr + " age: " + String(age)
-    retStr = retStr + " job: "
-    retStr = retStr + "spouse: " + String(self.spouse?.firstName ?? "")
-    // [Person: firstName: Ted lastName: Neward age: 45 job: Salary(1000) spouse: Charlotte]
+    var retStr = "[Person: firstName:" + firstName + " lastName:" + lastName + " age:" + String(age) + " job:"
+    retStr = retStr + String(self._job?.title ?? "nil")
+    retStr = retStr + " spouse:" + String(self.spouse?.firstName ?? "nil") + "]"
     return retStr
   }
 }
@@ -161,7 +165,10 @@ open class Family {
   open func householdIncome() -> Int {
     var total = 0
     for i in members {
+        print(i.toString())
         total = total + Int(i.job?.calculateIncome(2000) ?? 0)
+        print(Int(i.job?.calculateIncome(2000) ?? 0))
+        print(total)
     }
     return total
   }
