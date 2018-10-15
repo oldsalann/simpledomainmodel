@@ -63,17 +63,29 @@ open class Job {
   }
   
   public init(title : String, type : JobType) {
-    
+    self.type = type
+    self.title = title
   }
   
   open func calculateIncome(_ hours: Int) -> Int {
-    
+    switch self.type {
+    case .Salary(let i):
+        return Int(i / 2000) * hours
+    case .Hourly(let d):
+        return Int(d) * hours
+    }
   }
   
   open func raise(_ amt : Double) {
+    switch self.type {
+    case .Salary(let i):
+        self.type = JobType.Hourly(Double(i) * amt)
+    case .Hourly(let d):
+        self.type = JobType.Hourly(d * amt)
   }
 }
-/*
+
+
 ////////////////////////////////////
 // Person
 //
@@ -84,15 +96,22 @@ open class Person {
 
   fileprivate var _job : Job? = nil
   open var job : Job? {
-    get { }
+    get {
+        return _job
+    }
     set(value) {
+        _job = value
     }
   }
   
   fileprivate var _spouse : Person? = nil
   open var spouse : Person? {
-    get { }
+    get {
+        //return Person(firstName: String(self.spouse?.firstName ?? ""), lastName: String(self.spouse?.lastName ?? ""), age: Int(self.spouse?.age ?? 0))
+        return _spouse
+    }
     set(value) {
+        _spouse = value
     }
   }
   
@@ -103,6 +122,13 @@ open class Person {
   }
   
   open func toString() -> String {
+    var retStr = "[Person: firstName: " + firstName + " lastName: "
+    retStr = retStr + lastName
+    retStr = retStr + " age: " + String(age)
+    retStr = retStr + " job: "
+    retStr = retStr + "spouse: " + String(self.spouse?.firstName ?? "")
+    // [Person: firstName: Ted lastName: Neward age: 45 job: Salary(1000) spouse: Charlotte]
+    return retStr
   }
 }
 
@@ -113,6 +139,11 @@ open class Family {
   fileprivate var members : [Person] = []
   
   public init(spouse1: Person, spouse2: Person) {
+    spouse1.spouse = spouse2
+    spouse2.spouse = spouse1
+    members.append(spouse1)
+    members.append(spouse2)
+    
   }
   
   open func haveChild(_ child: Person) -> Bool {
@@ -122,7 +153,6 @@ open class Family {
   }
 }
 
-*/
 
 
 
