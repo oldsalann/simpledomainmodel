@@ -26,15 +26,29 @@ open class TestMe {
 public struct Money {
   public var amount : Int
   public var currency : String
-  
+    
   public func convert(_ to: String) -> Money {
+    let namesOfIntegers : [String: Double] = ["USD": 1.0, "EUR":2.0, "GBP": 1.50, "CAN": 0.50]
+    var newAmount = Double(self.amount) * 1.0
+    newAmount = newAmount / namesOfIntegers[self.currency]! / namesOfIntegers[to]!
+    let finAmount : Int = Int(newAmount)
+    let newMoney = Money(amount: finAmount, currency: to)
+    return newMoney
   }
   
   public func add(_ to: Money) -> Money {
+    let changedMoney = self.convert(to.currency)
+    let newMoney = Money(amount: (changedMoney.amount + to.amount),currency: to.currency)
+    return newMoney
   }
+    
   public func subtract(_ from: Money) -> Money {
+    let changedMoney = self.convert(from.currency)
+    let newMoney = Money(amount: (from.amount - changedMoney.amount),currency: from.currency)
+    return newMoney
   }
 }
+
 
 ////////////////////////////////////
 // Job
@@ -49,15 +63,17 @@ open class Job {
   }
   
   public init(title : String, type : JobType) {
+    
   }
   
   open func calculateIncome(_ hours: Int) -> Int {
+    
   }
   
   open func raise(_ amt : Double) {
   }
 }
-
+/*
 ////////////////////////////////////
 // Person
 //
@@ -106,7 +122,28 @@ open class Family {
   }
 }
 
+*/
 
 
 
 
+/*
+ switch to {
+ case "EUR":
+ newCur = "EUR"
+ newAmount = newAmount / namesOfIntegers[self.currency]! / namesOfIntegers[to]!
+ case "USD":
+ newCur = "USD"
+ 
+ case "CAN":
+ newCur = "CAN"
+ 
+ case "GBP":
+ newCur = "GBP"
+ 
+ default:
+ break
+ }
+ let finAmount : Int = Int(newAmount)
+ return Money(amount: finAmount
+*/
